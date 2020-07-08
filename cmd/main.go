@@ -1,27 +1,26 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"flag"
 	"os"
-	"sscrap/internal/scraper"
+	"sscrap/internal/cli"
+	"sscrap/internal/webserver"
 )
 
-func main() {
-	if len(os.Args) == 1 {
-		usage()
-		os.Exit(0)
-	}
-	stockName := os.Args[1]
-	data, err := scraper.Scrap(stockName)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	j, _ := json.MarshalIndent(data, "", "  ")
-	fmt.Println(string(j))
+var httpMode bool
+
+func init() {
+	flag.BoolVar(&httpMode, "http", false, "When informed, app will run as a http server")
+	flag.Parse()
 }
 
-func usage() {
-	fmt.Println("Usage: \"" + os.Args[0] + " <STOCK_CODE>\". Try PETR3, VALE3, etc.")
+func main() {
+	if httpMode {
+		webserver.Listen()
+		os.Exit(0)
+	}
+
+	// cli mode
+	cli.Run()
+	os.Exit(0)
 }
