@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"sscrap/internal/scraper"
 	"strings"
 )
@@ -12,7 +13,12 @@ import (
 func Listen() {
 	fmt.Println("running as http server...")
 	http.HandleFunc("/", handler)
-	err := http.ListenAndServe(":80", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+	p := ":" + port
+	err := http.ListenAndServe(p, nil)
 	if err != nil {
 		log.Fatal("[HTTP_ERROR]: ", err)
 	}
@@ -20,7 +26,8 @@ func Listen() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	stockName := strings.ReplaceAll(r.URL.String(), "/", "")
-	log.Println(stockName)
+	stockName = strings.ToUpper(stockName)
+	log.Printf("fetching information about: %v\n", stockName)
 	data, err := scraper.Scrap(stockName)
 	if err != nil {
 		log.Println("[ERROR] ", err)
