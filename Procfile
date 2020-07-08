@@ -1,1 +1,1 @@
-web: go run cmd/main.go --http
+web: ./bin/cmd --http
