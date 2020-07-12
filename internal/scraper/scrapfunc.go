@@ -63,14 +63,12 @@ func profitFunc(n *html.Node, d DataScraped) DataScraped {
 				spanYearMinusFour,
 				spanYearMinusFive := getLast5YearValues(td12Months)
 
-			year := time.Now().Year()
-
-			d.Profit.LastFiveYears = map[int]string{
-				year - 1: strings.ReplaceAll(renderNode(spanYearMinusOne), "\n", ""),
-				year - 2: strings.ReplaceAll(renderNode(spanYearMinusTwo), "\n", ""),
-				year - 3: strings.ReplaceAll(renderNode(spanYearMinusThree), "\n", ""),
-				year - 4: strings.ReplaceAll(renderNode(spanYearMinusFour), "\n", ""),
-				year - 5: strings.ReplaceAll(renderNode(spanYearMinusFive), "\n", ""),
+			d.Profit.LastFiveYears = map[string]string{
+				d.Years[0]: strings.ReplaceAll(renderNode(spanYearMinusOne), "\n", ""),
+				d.Years[1]: strings.ReplaceAll(renderNode(spanYearMinusTwo), "\n", ""),
+				d.Years[2]: strings.ReplaceAll(renderNode(spanYearMinusThree), "\n", ""),
+				d.Years[3]: strings.ReplaceAll(renderNode(spanYearMinusFour), "\n", ""),
+				d.Years[4]: strings.ReplaceAll(renderNode(spanYearMinusFive), "\n", ""),
 			}
 			err := d.CalculateProfitAverage()
 			if err != nil {

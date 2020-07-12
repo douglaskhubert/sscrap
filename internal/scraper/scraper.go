@@ -39,6 +39,27 @@ func Scrap(stockName string) (DataScraped, error) {
 			if data.Segment == "" {
 				data.Segment = tryScrapSegment(n)
 			}
+			for _, a := range n.Attr {
+				if a.Key == "aria-label" && a.Val == "Grid com a demonstração do resultado do exercício (DRE)" {
+					trFirstRowElem := n.FirstChild.NextSibling.FirstChild.NextSibling.FirstChild.NextSibling.FirstChild.NextSibling
+					thYearMinusOne := trFirstRowElem.FirstChild.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling
+					yearMinusOne := strings.ReplaceAll(renderNode(thYearMinusOne.FirstChild), "\n", "")
+
+					thYearMinusTwo := thYearMinusOne.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling
+					yearMinusTwo := strings.ReplaceAll(renderNode(thYearMinusTwo.FirstChild), "\n", "")
+
+					thYearMinusThree := thYearMinusTwo.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling
+					yearMinusThree := strings.ReplaceAll(renderNode(thYearMinusThree.FirstChild), "\n", "")
+
+					thYearMinusFour := thYearMinusThree.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling
+					yearMinusFour := strings.ReplaceAll(renderNode(thYearMinusFour.FirstChild), "\n", "")
+
+					thYearMinusFive := thYearMinusFour.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling
+					yearMinusFive := strings.ReplaceAll(renderNode(thYearMinusFive.FirstChild), "\n", "")
+
+					data.Years = []string{yearMinusOne, yearMinusTwo, yearMinusThree, yearMinusFour, yearMinusFive}
+				}
+			}
 		}
 		if n.Type == html.ElementNode && n.Data == "a" {
 			if data.Industry == "" {

@@ -8,14 +8,15 @@ import (
 )
 
 type DataScraped struct {
-	ID            string `json:"id"`
-	Segment       string `json:"segmento"`
-	Industry      string `json:"setor_atuacao"`
-	Cash          string `json:"caixa"`
-	GrossDebit    string `json:"divida_bruta"`
-	DebitByEBITDA string `json:"divida_liquida_por_ebitda"`
-	Profit        Profit `json:"lucro_liquido"`
-	ROE           ROE    `json:"roe"`
+	ID            string   `json:"id"`
+	Segment       string   `json:"segmento"`
+	Industry      string   `json:"setor_atuacao"`
+	Cash          string   `json:"caixa"`
+	GrossDebit    string   `json:"divida_bruta"`
+	DebitByEBITDA string   `json:"divida_liquida_por_ebitda"`
+	Profit        Profit   `json:"lucro_liquido"`
+	ROE           ROE      `json:"roe"`
+	Years         []string `json:"-"`
 }
 
 type ROE struct {
@@ -25,9 +26,9 @@ type ROE struct {
 }
 
 type Profit struct {
-	LastTwelveMonths string         `json:"ultimos_12meses"`
-	LastFiveYears    map[int]string `json:"ultimos_5anos"`
-	AvgLastFiveYears string         `json:"media_ultimos_5anos"`
+	LastTwelveMonths string            `json:"ultimos_12meses"`
+	LastFiveYears    map[string]string `json:"ultimos_5anos"`
+	AvgLastFiveYears string            `json:"media_ultimos_5anos"`
 }
 
 func (d *DataScraped) IsNil() bool {
